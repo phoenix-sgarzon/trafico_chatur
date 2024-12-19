@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@500&display=swap');
+
+*{
+    font-family: 'Grandstander', cursive;
+}
+
+body {
+    width: 800px; 
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    margin: 0;
+}
+
+article {
+    font-size: 1.8em;
+    position: relative;
+    width: 100%;
+    margin: auto;
+    transition: all .3s ease;
+    display: flex;
+    justify-content: center;
+}
+
+#img_fondo{
+    box-shadow: 0 60px 60px -60px rgba(0, 30, 255, 0.5);
+    border-radius: 4px;
+    object-fit: cover;
+    width: 100%;
+}
+
+#desplegables {
+    display: flex;
+    position: absolute;
+    width: 60%;
+    top: 10%;
+    transition: .2s ease;
+    opacity: 0;
+}
+
+#automatico, #manual, #detener {
+    border: 1px solid rgba(197, 197, 197, 0.11);
+    font-size: 1.2em;
+    position: absolute;
+    width: 20%;
+    height: 250px;
+    bottom: 10%;
+    transform: translateY(25%);
+    transition: .2s ease;
+    opacity: 0;
+    border-radius: 40px;
+    padding: 15px;
+    color: #ffffff;
+}
+
+#manual > p{
+    margin-top: -10px;
+}
+
+#manual {
+    width: 37%;
+    left: 30%;
+}
+
+#automatico {
+    left: 6%;
+}
+
+#detener {
+    right: 5%;
+}
+
+.btns {
+    width: 130px;
+    cursor: pointer;
+}
+
+article select {
+    box-shadow:none;
+    background: #5c6664;
+    color:#fff;
+    cursor:pointer;
+    margin: auto;
+    font-size: 0.8em;
+    height: 35px;
+    text-align: center;
+    border-radius: 40px;
+}
+
+/*#stopexec {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    position: absolute;
+}*/
+
+article:hover {
+    transform: 
+        perspective(300px)
+        rotateX(5deg)
+        translateY(-5%)
+        translateZ(0);
+}
+
+article::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background-image: 
+        linear-gradient(
+            to bottom,
+            transparent 10%,
+            rgba(0, 0, 0, 0.76) 50%,
+            rgba(0, 0, 0) 95%
+        );
+        opacity: 0;
+        transition: .3s ease;
+}
+
+article:hover::before {
+    opacity: 1;
+}
+
+article:hover > #desplegables, article:hover > #automatico, article:hover > #manual, article:hover > #detener {
+    opacity: 1;
+    transform: translateY(10%);
+}
+
+input {
+    background-color: rgb(84, 2, 100);
+    border-radius: 20px;
+    height: 35px;
+    margin: 5px 0px;
+    color: #fff;
+}

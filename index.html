@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/thirdParty/jquery-3.4.1.min.js"></script>
+    <script src="js/popup.js"></script>
+    <title>Phoenix Studio</title>
+</head>
+<body>
+    <article>
+        <img id="img_fondo" src="https://phoenixstd.com/ps_media/fondo-loging.png">
+
+        <div id="desplegables">
+            <p>
+                Perfil de Trafico
+                <select name="perTraf" id="perTraf">
+                    <option value="1" selected>Satisfying_morning</option>
+                    <option value="2">Strangers_things_</option>
+                </select>
+            </p>
+            <p>
+                Categoria Mensajes
+                <select name="catMensaje" id="catMensaje">
+                </select>
+            </p>
+        </div>
+
+        <div id="automatico">
+            <p>
+                Trafico Automatico<br>
+                <img id="startcustomGold" class="btns" src="images/trafico_automatico.png">
+            </p>
+        </div>
+
+        <div id="manual">
+            <p>
+                Trafico Manual<br>
+                <img id="start_ghost" class="btns" src="images/trafico_sabana.png">
+                <img id="startcustom2" class="btns" src="images/trafico_mensaje.png">
+                <br>
+                <input class="btn-users" type="submit" id="execuser" value="Cargar Usuarios (+)">
+                <input class="btn-ver" type="submit" id="verUsu" value="Ver Usuarios (CB)">
+                <input class="btn-deleteusers" type="submit" id="deleteuser" value="Limpiar Usuarios (X)">
+            </p>
+        </div>
+
+        <div id="detener">
+            <p>
+                Detener Trafico<br>
+                <img id="stopexec" class="btns" src="images/detener_trafico.png">
+            </p>
+        </div>
+    </article>
+</body>
+</html>
