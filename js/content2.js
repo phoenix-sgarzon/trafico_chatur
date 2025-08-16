@@ -1,64 +1,53 @@
 let perfil;
-let usuariosActivos = [];
 let cantPagi = 1;
-window.document.title = 'Cargue de Usuarios';
 
 window.addEventListener("load", function () {
-    window.document.title = 'Cargue de Usuarios';
-    console.log("All loaded!");
+    console.log("🔄 Página de seguidos cargada");
     let url = window.location.toString();
-    perfil = document.getElementById("user_information_profile_container").innerText;
+    perfil = document.getElementById("user_information_profile_container")?.innerText || "";
 
-    if ( url == "https://chaturbate.com/followed-cams/online/" || url.includes("followed-cams/online/?page=") ) {
-        if (document.querySelectorAll(".paging").length > 0 ) {
-            cantPagi = document.querySelectorAll(".paging > li.page_number_container");
-            if (cantPagi.length != 0) {
-                cantPagi = cantPagi.length;
-                console.log(cantPagi);
+    if (url === "https://chaturbate.com/followed-cams/online/" || url.includes("followed-cams/online/?page=")) {
+        if (document.querySelectorAll(".paging").length > 0) {
+            let paginas = document.querySelectorAll(".paging > li.page_number_container");
+            if (paginas.length > 0) {
+                cantPagi = paginas.length;
+                console.log("📄 Total páginas:", cantPagi);
             }
         }
-
-        console.log("Cargando otra pagina de seguidos");
         mostrarPerfiles();
     }
 });
 
 function mostrarPerfiles() {
     try {
-        var fotos = document.querySelectorAll(".room_thumbnail");
-        for (var i = 0; i < fotos.length; i++) {
-            fotos[i].remove();
-        }
+        let usuariosActivos = [];
+        
+        // quitar miniaturas
+        document.querySelectorAll(".room_thumbnail").forEach(f => f.remove());
 
-        var nombresUs = document.querySelectorAll("li.roomCard > a");
-        var espectadoresUs = document.querySelectorAll("li.roomCard > div.details > ul.sub-info > li.cams");
+        let nombresUs = document.querySelectorAll("li.roomCard > a");
+        let espectadoresUs = document.querySelectorAll("li.roomCard > div.details > ul.sub-info > li.cams");
 
         for (let i = 0; i < nombresUs.length; i++) {
-            var nomUs = nombresUs[i].getAttribute("data-room");
-            var espec = parseInt(espectadoresUs[i].textContent.split(' ')[1]);
-            dataUsuarios = {
-                usuario: nomUs,
-                espectadores: espec
-            }
-            usuariosActivos.push(dataUsuarios);
+            let nomUs = nombresUs[i].getAttribute("data-room");
+            let espec = parseInt(espectadoresUs[i].textContent.split(" ")[1] || "0", 10);
+
+            usuariosActivos.push({ usuario: nomUs, espectadores: espec });
         }
-        
-        console.log(usuariosActivos);
+
+        console.log("👥 Usuarios activos encontrados:", usuariosActivos);
         sendCommand("usuariosActivos", usuariosActivos, perfil, cantPagi);
+
     } catch (error) {
-        console.log(error);
-        sendCommand("usuariosActivos", usuariosActivos, perfil, cantPagi);
-        window.close();
+        console.error("⚠️ Error en mostrarPerfiles:", error);
+        sendCommand("usuariosActivos", [], perfil, cantPagi);
+        // En MV3 no puedes cerrar directamente desde el content
+        chrome.runtime.sendMessage({ txt: "closeTab" });
     }
 }
 
 function sendCommand(command, param, param2, param3) {
-    let msg = {
-        txt: command,
-        param,
-        param2,
-        param3
-    }
+    let msg = { txt: command, param, param2, param3 };
     chrome.runtime.sendMessage(msg);
-    console.log("¡Mensaje " + command + " enviado!" + msg.param);
+    console.log("📨 Mensaje enviado:", msg);
 }

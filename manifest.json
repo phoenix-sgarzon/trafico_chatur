@@ -1,37 +1,49 @@
 {
-    "manifest_version": 3,
-    "name": "Trafico Chaturbate - Phoenix Studio",
-    "description": "Extension de Phoenix studio (Trafico Mensajes, Trafico Sabana, APIS NUEVAS, Seleccion de Categorias y bloqueo de envio de mensaje a modelos que no esten en el stats)",
-    "version": "4.5",
-    "author": "Phoenix Studio, Sebastian Garzon",
-    "icons": {
-        "128": "images/estudio.png"
-    },
-    "action": {
-        "default_popup": "index.html"
-    },
-    "permissions": [
-        "activeTab",
-        "alarms",
-        "tabs",
-        "scripting",
-        "storage"
-    ],
-    "host_permissions": [
-        "http://*/*",
-        "https://*/*"
-    ],
-    "background": {
-        "service_worker": "js/background.js"
-    },
-    "content_scripts": [{
-        "matches": [
-            "https://*.chaturbate.com/*"
-        ],
-        "js": [
-            "js/thirdParty/jquery-3.4.1.min.js",
-            "js/content.js"
-        ],
-        "run_at": "document_end"
-    }]
+  "manifest_version": 3,
+  "name": "Trafico Chaturbate - Phoenix Studio",
+  "version": "5.0",
+  "description": "Extensión de Phoenix Studio (Tráfico Mensajes, Tráfico Sábana, APIs nuevas, Selección de Categorías y bloqueo de envío de mensaje a modelos que no estén en el stats).",
+  "author": "Phoenix Studio, Sebastian Garzon",
+  
+  "icons": {
+    "16": "images/logo.png",
+    "48": "images/logo.png",
+    "128": "images/logo.png"
+  },
+
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "images/logo.png",
+      "48": "images/logo.png",
+      "128": "images/logo.png"
+    }
+  },
+
+  "permissions": [
+    "tabs",
+    "scripting",
+    "storage"
+  ],
+
+  "host_permissions": [
+    "https://*.chaturbate.com/*"
+  ],
+
+  "background": {
+    "service_worker": "js/background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.chaturbate.com/*"
+      ],
+      "js": [
+        "js/thirdParty/jquery-3.4.1.min.js",
+        "js/content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
 }
