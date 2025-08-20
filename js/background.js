@@ -1,7 +1,7 @@
 let dominio = "apps.phoenixstd.com";
 
-let maquina = 16;
-let sede = "Santa Isabel";
+let maquina = 8;
+let sede = "Programacion";
 let perfilTra = "";
 let vpn = "";
 let categoriaMsg = "";
@@ -43,40 +43,6 @@ function getCurrentDateTimeString() {
     return date + ' ' + time;
 }
 
-function abrirSeguidos() {  // Abrir siguientes Seguidos
-    console.log(`Iniciando Cargue de usuarios Activos:  ${getCurrentDateTimeString()}`);
-    contPagSeg = 1;
-    cantPagi = 0;
-
-    usuariosaRevisar = [];
-    datosUsuariosActivos = [];
-    windowIdUsuariosActivos;
-    tabwindowIdUsuariosActivos;
-
-    chrome.windows.create({
-            url: "https://chaturbate.com/followed-cams/online/",
-            type: "normal",
-            focused: true,
-            height: 1000,
-            width: 600,
-        },
-        function(window) {
-            try {
-                windowIDPrin = window.id;
-                tabwindowId1 = window.tabs[0].id;
-
-                chrome.scripting.executeScript({
-                    target: { tabId: tabwindowId1 },
-                    files: ['js/content2.js'],
-                });
-            } catch (error) {
-                console.log("Error al ejecutar siguiente usuarios" + error);
-                abrirSeguidos();
-            }
-        }
-    );
-}
-
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     if ( msg.txt == "openCloseWarning" ) {
         console.log('openCloseWarning recibido en segundo plano para la pestaña ' + msg.tab);
@@ -100,6 +66,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         seleccionCat = msg.param4;
         categoriaMsg = msg.param5;
         stopExec = false;
+        
         if(usuariosaRevisar.length !== 0){
             StarProcess(2, msg.param, msg.userName, msg.param);
         }else{
@@ -115,61 +82,9 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     
         StarProcess(3, msg.param, msg.userName, msg.param);
 
-    } else if (msg.txt == "verUsu") {
-        sendResponse({ "usuariosCargados": usuariosaRevisarNombres});
-
     } else if (msg.txt == "stopExec") {
         console.log('recibido en segundo plano ' + msg.txt);
         stopExec = true;
-
-    } else if (msg.txt == "cargarUsuarios") {
-        abrirSeguidos();
-
-    }  else if (msg.txt == "usuariosActivos") { // Cargue de pestañas de usuarios Activos
-        try {
-            console.log("Datos Pagina #" + contPagSeg);
-            datosUsuariosActivos = msg.param;
-            console.log(datosUsuariosActivos);
-            for (i = 0; i < datosUsuariosActivos.length; i++) {
-                dataUsuarios = {
-                    nombreUsuario: datosUsuariosActivos[i].usuario
-                }
-                usuariosaRevisar.push(dataUsuarios);
-                usuariosaRevisarNombres.push(datosUsuariosActivos[i].usuario);
-            }
-
-            let cantPagi = msg.param3;
-            contPagSeg = contPagSeg + 1;
-
-            if (contPagSeg <= cantPagi) {
-                chrome.tabs.create({
-                        url: "https://chaturbate.com/followed-cams/online/?page=" + contPagSeg,
-                        "windowId": windowIDPrin,
-                        "active": true,
-                        "selected": true
-                    },
-                    function(windowTab) {
-                        console.log(windowTab);
-                        chrome.scripting.executeScript({
-                            target: { tabId: windowTab.id },
-                            files: ['js/content2.js'],
-                        });
-                    }
-                );
-            }else{
-                try {
-                    chrome.windows.remove(windowIDPrin);
-                } catch (error) {
-                    console.log("No hay ventana de cargue de usuarios manual");
-                }
-            }
-        } catch (error) {
-            console.log("Abrir Seguidos " + error);
-            abrirSeguidos();
-        }
-
-    } else if (msg.txt == "limpiarBD") {
-        usuariosaRevisar = [];
 
     } else if (msg.txt == "openNewTab") {
         if(stopExec == false){

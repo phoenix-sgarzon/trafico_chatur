@@ -133,9 +133,9 @@ $(function () {
                         })
                             .then(response => response.json())
                             .then(function (json) {
-                                console.log(json);
                                 try{
                                     if (json["body"]["premium"] == 0 || json["body"]["premium"] == 1) {
+                                        alert("Accediendo");
                                         sendCBCommand("startProcess2Cont", seleccionPer, cuenta, vpn, seleccionCat, categoriaMen);
                                     }
                                 } catch {

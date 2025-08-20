@@ -147,7 +147,23 @@ chrome.runtime.onMessage.addListener((request) => {
 
     switch (request.txt) {
         case "startProcessGoldCont":
+            if (url.includes(userName)) {
+                request.txt = "startProcessGold";
+                const msg = { ...request, userName };
+                revisarModelo(msg, userName);
+            } else {
+                alert("⚠ Debes estar en la biografía de la modelo.");
+            }
+            break;
         case "startProcess2Cont":
+            if (url.includes(userName)) {
+                request.txt = "startProcess2";
+                const msg = { ...request, userName };
+                revisarModelo(msg, userName);
+            } else {
+                alert("⚠ Debes estar en la biografía de la modelo.");
+            }
+            break;
         case "startProcessGhost":
             if (url.includes(userName)) {
                 const msg = { ...request, userName };
@@ -166,6 +182,8 @@ chrome.runtime.onMessage.addListener((request) => {
             break;
 
         case "sendNow":
+            sendMessage(userName, request.message || "Hello baby");
+            break;
         case "sendNowRandom":
             sendMessage(userName, request.message || "Hello baby");
             break;
