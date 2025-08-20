@@ -1,140 +1,136 @@
 @import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@500&display=swap');
 
-*{
+* {
     font-family: 'Grandstander', cursive;
 }
 
 body {
-    width: 800px; 
-    background-color: black;
-    justify-content: center;
-    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #220b38, #780091);
+    color: white;
     text-align: center;
-    color: #ffffff;
     margin: 0;
+    padding: 0 30px;
 }
 
-article {
-    font-size: 1.8em;
-    position: relative;
-    width: 100%;
-    margin: auto;
-    transition: all .3s ease;
+.header {
     display: flex;
+    align-items: center;
+    /* centra verticalmente */
     justify-content: center;
+    /* centra todo en el medio de la pantalla */
+    gap: 15px;
+    /* espacio entre texto e imagen */
+    padding: 15px 0;
 }
 
-#img_fondo{
-    box-shadow: 0 60px 60px -60px rgba(0, 30, 255, 0.5);
-    border-radius: 4px;
-    object-fit: cover;
-    width: 100%;
+.header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 2px;
+}
+
+.header img {
+    width: 60px;
+    /* ajusta tamaño del logo */
+    height: auto;
 }
 
 #desplegables {
     display: flex;
-    position: absolute;
-    width: 60%;
-    top: 10%;
-    transition: .2s ease;
-    opacity: 0;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 25px;
 }
 
-#automatico, #manual, #detener {
-    border: 1px solid rgba(197, 197, 197, 0.11);
-    font-size: 1.2em;
-    position: absolute;
-    width: 20%;
-    height: 250px;
-    bottom: 10%;
-    transform: translateY(25%);
-    transition: .2s ease;
-    opacity: 0;
-    border-radius: 40px;
-    padding: 15px;
-    color: #ffffff;
-}
-
-#manual > p{
-    margin-top: -10px;
-}
-
-#manual {
-    width: 37%;
-    left: 30%;
-}
-
-#automatico {
-    left: 6%;
-}
-
-#detener {
-    right: 5%;
-}
-
-.btns {
-    width: 130px;
-    cursor: pointer;
-}
-
-article select {
-    box-shadow:none;
-    background: #5c6664;
-    color:#fff;
-    cursor:pointer;
-    margin: auto;
-    font-size: 0.8em;
-    height: 35px;
-    text-align: center;
-    border-radius: 40px;
-}
-
-/*#stopexec {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+#desplegables p {
     margin: 0;
-    position: absolute;
-}*/
-
-article:hover {
-    transform: 
-        perspective(300px)
-        rotateX(5deg)
-        translateY(-5%)
-        translateZ(0);
+    font-size: 16px;
 }
 
-article::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    height: 100%;
-    width: 100%;
-    background-image: 
-        linear-gradient(
-            to bottom,
-            transparent 10%,
-            rgba(0, 0, 0, 0.76) 50%,
-            rgba(0, 0, 0) 95%
-        );
-        opacity: 0;
-        transition: .3s ease;
+select {
+    background: #2a1a38;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    color: white;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
-article:hover::before {
-    opacity: 1;
+article {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
 }
 
-article:hover > #desplegables, article:hover > #automatico, article:hover > #manual, article:hover > #detener {
-    opacity: 1;
-    transform: translateY(10%);
-}
-
-input {
-    background-color: rgb(84, 2, 100);
+.card {
+    background: #190830;
     border-radius: 20px;
-    height: 35px;
-    margin: 5px 0px;
-    color: #fff;
+    width: 220px;
+    box-shadow: 0 0 15px rgb(255 255 255 / 40%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.card img {
+    width: 180px;
+}
+
+.card-btn{
+    background: #510981;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 180px;
+    box-shadow: 0px 4px 4px rgb(100 0 255 / 94%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#manual .icons {
+    display: flex;
+    justify-content: center;
+}
+
+#manual .icons img {
+    width: 140px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+    align-items: center;
+}
+
+.buttons button {
+    background: #461c5a;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    width: 200px;
+}
+
+.buttons button:hover {
+    background: #6a2d8f;
+}
+
+select {
+    background: #190830;
 }
