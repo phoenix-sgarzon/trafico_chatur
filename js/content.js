@@ -55,23 +55,64 @@ function clickOnAccept() {
 // =======================
 // PROCESO DE MENSAJES
 // =======================
-function callInitMsgProcess(userName) {
-    const msgBox = document.querySelector(SELECTORS.messageBox);
-    if (msgBox) {
-        const url = window.location.href;
-        console.log("📩 Pidiendo mensaje para", userName, "en", url);
-        sendRuntimeMsg({ txt: "askForMessage", param: url, param2: userName });
-    } else if (!alreadySendMessageCalled) {
-        console.log("⚠ Caja de texto no encontrada. Reintentando...");
-        setTimeout(() => callInitMsgProcess(userName), randomDelay(DELAY_BEFORE_MSG));
-        alreadySendMessageCalled = true;
+function searchAndSendMessage(ghost) {
+    let url = window.location.href;
+    let userName = document.querySelector(SELECTORS.userName)?.innerText || "";
+
+    if (!url.includes(userName) && !url.includes("followed-cams") && url.includes("chaturbate.com")) {
+        console.log("📌 Pidiendo cerrar pestaña de usuario masculino:", userName);
+
+        if (!ghost) {
+            setTimeout(callCloseTab, TAB_TIMEOUT, userName);
+
+            if (DELAY_BEFORE_MSG > 0) {
+                let timeOut = randomInteger(DELAY_BEFORE_MSG - 500, DELAY_BEFORE_MSG + 4500);
+                setTimeout(callInitMsgProcess, timeOut, userName);
+            }
+        } else {
+            setTimeout(callCloseTab, 250000, userName);
+        }
+    } else {
+        console.log("⚠ Página desconocida:", url);
     }
 }
 
+// ---- pide al background que cierre la pestaña ----
 function callCloseTab(userName) {
-    const url = window.location.href;
-    console.log("❌ Cerrando TAB de", userName, "en", url);
-    sendRuntimeMsg({ txt: "closeTab", param: url, param2: userName });
+    let url = window.location.toString();
+    console.log("🛑 Pidiendo cerrar TAB para", userName, "URL:", url);
+
+    let msg = {
+        txt: "closeTab",
+        tab: 0,
+        param: url,
+        param2: userName
+    };
+    chrome.runtime.sendMessage(msg);
+}
+
+// ---- pide al background un mensaje para este usuario ----
+function callInitMsgProcess(userName) {
+    if (document.querySelector(SELECTORS.messageBox)) {
+        let url = window.location.toString();
+        console.log("✍️ Pidiendo mensaje para", userName, "URL:", url);
+
+        let msg = {
+            txt: "askForMessage",
+            tab: 0,
+            param: url,
+            param2: userName
+        };
+        chrome.runtime.sendMessage(msg);
+    } else {
+        console.warn("⚠️ No se encontró el cuadro de texto de mensajes.");
+
+        if (!alreadySendMessageCalled) {
+            let timeOut = randomInteger(DELAY_BEFORE_MSG - 500, DELAY_BEFORE_MSG + 4500);
+            setTimeout(callInitMsgProcess, timeOut, userName);
+            alreadySendMessageCalled = true;
+        }
+    }
 }
 
 // =======================

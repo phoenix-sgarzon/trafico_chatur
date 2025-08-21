@@ -57,6 +57,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         vpn = msg.param3;
         seleccionCat = msg.param4;
         categoriaMsg = msg.param5;
+
         stopExec = false;
         StarProcess(1, msg.param, msg.userName, msg.param);
 
