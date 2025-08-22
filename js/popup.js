@@ -33,7 +33,7 @@ function mostrarDatosCat(data) {
 }
 
 window.onload = function () {
-    alert("No olvides usar VPN para evitar ser bloqueado !");
+    console.log("No olvides usar VPN para evitar ser bloqueado !");
 }
 
 let userIP = null;
@@ -121,7 +121,7 @@ $(function () {
             getInfo(userIP).then(location => {
                 if (location) {
                     var vpn = location.country;
-                    if (vpn !== "Colombia") {
+                    if (vpn == "Colombia") {
                         var categoriaMen = document.getElementById("catMensaje").selectedOptions[0].innerText;
                         var seleccionCat = document.getElementById("catMensaje").value;
                         seleccionCat = parseInt(seleccionCat.substring(0, 1));
@@ -211,40 +211,6 @@ $(function () {
     $("#stopexec").click(function () {
         let msg = { txt: "stopExec", tab: 0, param: "", param2: "" }
         chrome.runtime.sendMessage(msg);
-    });
-
-    $("#verUsu").click(function () {
-        chrome.tabs.query({
-            currentWindow: true,
-            active: true
-        }, function(tabs) {
-            let msg = { txt: "verUsu", tab: tabs[0].id }
-            chrome.runtime.sendMessage(msg, function(response) {
-                var element = response.usuariosCargados.map((e, i) => (i + 1 + '. ' + e + '\n')).join(' ');
-                alert(
-                    "Usuarios Cargados: " + response.usuariosCargados.length + "\n\n"+element
-                );
-            });
-        });
-        
-    });
-
-    $("#execuser").click(function () {
-        let msg = {
-            txt: "cargarUsuarios",
-            tab: 0,
-            param: "",
-            param2: ""
-        }
-        chrome.runtime.sendMessage(msg);
-    });
-
-    $("#deleteuser").click(function () {
-        var limpiar = confirm("Borrar el registro limpia la base de datos para todas las ejecuciones\n¿Esta seguro de limpiar el listado de usuarios activos?");
-        if ( limpiar ) {
-            let msg = { txt: "limpiarBD" }
-            chrome.runtime.sendMessage(msg);
-        }
     });
 });
 

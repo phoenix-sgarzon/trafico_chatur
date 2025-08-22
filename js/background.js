@@ -1,7 +1,7 @@
 let dominio = "apps.phoenixstd.com";
 
 let maquina = 8;
-let sede = "Programacion";
+let sede = "Angeles 7.";
 let perfilTra = "";
 let vpn = "";
 let categoriaMsg = "";
@@ -9,7 +9,7 @@ let seleccionCat = 1;
 let nombreCategoria = "";
 
 var windowsCount = 3;
-var generalTimeout = 25; // in minutes
+var generalTimeout = 20; // in minutes
 
 let url_api_mensaje = "https://" + dominio + "/api/mensajes.php?id_categoria=";
 let url_api_stats = "https://" + dominio + "/api/stats.php";

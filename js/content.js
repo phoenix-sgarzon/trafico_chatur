@@ -243,13 +243,14 @@ function sendMessage(userName, texteToSend) {
     }
 
     msgBox.innerHTML = texteToSend;
-    document.querySelector(SELECTORS.acceptRules)?.click();
 
     if (document.querySelector(SELECTORS.btnDisabled)) {
         console.log("⚠ Botón deshabilitado. Reintentando...");
         sendRuntimeMsg({ txt: "openWinUser", param: window.location.href, param2: userName });
         sendRuntimeMsg({ txt: "closeTab", param: window.location.href, param2: userName });
     } else {
+        document.querySelector(SELECTORS.btnSend)?.click();
+        document.querySelector(SELECTORS.acceptRules)?.click();
         document.querySelector(SELECTORS.btnSend)?.click();
         sendRuntimeMsg({ txt: "msgSended", param: window.location.href, param2: userName, param3: texteToSend });
     }
