@@ -55,7 +55,7 @@ $(function () {
             getInfo(userIP).then(location => {
                 if (location) {
                     var vpn = location.country;
-                    if (vpn !== "Colombia") {
+                    // if (vpn !== "Colombia") {
                         var categoriaMen = document.getElementById("catMensaje").selectedOptions[0].innerText;
                         var seleccionCat = document.getElementById("catMensaje").value;
                         seleccionCat = parseInt(seleccionCat.substring(0, 1));
@@ -107,43 +107,9 @@ $(function () {
                                 }
                             }).catch(error => alert("Ha habido un error -> " + error));
 
-                    } else {
+                    /*} else {
                         alert("Debes tener una VPN Activa para ejecutar esta extension");
-                    }
-                }
-            })
-        });
-    });
-
-    $("#startcustom2").click(function () {
-        getIP().then(response => {
-            userIP = response.ip;
-            getInfo(userIP).then(location => {
-                if (location) {
-                    var vpn = location.country;
-                    if (vpn == "Colombia") {
-                        var categoriaMen = document.getElementById("catMensaje").selectedOptions[0].innerText;
-                        var seleccionCat = document.getElementById("catMensaje").value;
-                        seleccionCat = parseInt(seleccionCat.substring(0, 1));
-                        var seleccionPer = document.getElementById("perTraf").value;
-                        var cuenta = document.getElementById("perTraf").selectedOptions[0].innerText;
-                        var acount = url_cuenta + cuenta;
-                        fetch(acount, {
-                            method:'GET'
-                        })
-                            .then(response => response.json())
-                            .then(function (json) {
-                                try{
-                                    if (json["body"]["premium"] == 0 || json["body"]["premium"] == 1) {
-                                        sendCBCommand("startProcess2Cont", seleccionPer, cuenta, vpn, seleccionCat, categoriaMen);
-                                    }
-                                } catch {
-                                    alert("No puedes ejecutar trafico si tu perfil de trafico no ha comprado ningun servicio");
-                                }
-                            }).catch(error => alert("Ha habido un error -> " + error));
-                    } else {
-                        alert("Debes tener una VPN Activa para ejecutar esta extension");
-                    }
+                    }*/
                 }
             })
         });
@@ -155,7 +121,7 @@ $(function () {
             getInfo(userIP).then(location => {
                 if (location) {
                     var vpn = location.country;
-                    if (vpn !== "Colombia") {
+                    //if (vpn !== "Colombia") {
                         var seleccionPer = document.getElementById("perTraf").value;
                         var cuenta = document.getElementById("perTraf").selectedOptions[0].innerText;
                         var acount = url_cuenta + cuenta;
@@ -164,7 +130,6 @@ $(function () {
                         })
                             .then(response => response.json())
                             .then(function (json) {
-                                console.log(json);
                                 try{
                                     if (json["body"]["premium"] == 0 || json["body"]["premium"] == 1) {
                                         if (seleccionPer == 1) {
@@ -200,9 +165,9 @@ $(function () {
                                     alert("No puedes ejecutar trafico si tu perfil de trafico no ha comprado ningun servicio");
                                 }
                             }).catch(error => alert("Ha habido un error -> " + error));
-                    } else {
+                    /*} else {
                         alert("Debes tener una VPN Activa para ejecutar esta extension");
-                    }
+                    }*/
                 }
             })
         });

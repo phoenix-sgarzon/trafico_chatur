@@ -21,9 +21,6 @@ var stopExec = false;
 var seqWindow = 0;
 let countMsg = 0;
 
-let contPagSeg = 1;
-let cantPagi = 0;
-
 let usuariosaRevisar = [];
 let usuariosaRevisarNombres = [];
 
@@ -200,7 +197,15 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         }
     } else if (msg.txt == "msgSended") {
         if(stopExec == false){
-            console.log("\n\nUrl:" + msg.param + "\nUsuario: " + msg.param2 + "\nCategoria Mensaje: " + categoriaMsg + "\nMensaje: '" + msg.param3 + "'\n\n")
+            console.log("\n\nUrl:" + msg.param + "\nUsuario: " + msg.param2 + "\nCategoria Mensaje: " + categoriaMsg + "\nMensaje: '" + msg.param3 + "'\n\n");
+
+            if (seqWindow) {
+                chrome.scripting.executeScript({
+                    target: { tabId: seqWindow },
+                    func: (newTitle) => { document.title = newTitle; },
+                    args: ["Trafico (" + countMsg + ")"]
+                });
+            }
         }
     }
 });
@@ -220,7 +225,7 @@ function getMessageForUser(userName, tabtonotify) {
                         message: msg.mensaje,
                         categoria: seleccionCat
                     }
-                    console.log("Mensaje " + msg.mensaje);
+                    
                     chrome.tabs.sendMessage(tabtonotify, smsg);
                     console.log("Mensaje '" + msg.mensaje + "' enviado!");
                 } else {
@@ -288,7 +293,6 @@ function GetUsersString(usersaArray) {
 }
 
 function StarProcess(tipoCargue, tabsToOpen, userName, selec_trafico) {
-    console.log('StarProcess ... ');
     seqWindow = 0;
     
     if (selec_trafico == 1) {
@@ -344,43 +348,6 @@ function StarProcess(tipoCargue, tabsToOpen, userName, selec_trafico) {
                     }
                 );
             }).catch(error => console.log(error));
-
-    } else if ( tipoCargue == 2 ){
-        var users = GetUsersString(usuariosaRevisar);
-        sendStatCommand(userName, "START", 15, "Users-" + usuariosaRevisar.length);
-        var newPage = "https://es.chaturbate.com/followed-cams/online";
-        console.log("Abriendo Pagina " + newPage);
-
-        windowList = [];
-
-        for (var i = 0; i < windowsCount; i++) {
-            windowList[i] = 0;
-        }
-
-        chrome.windows.create({
-                url: newPage,
-                type: "normal",
-                focused: true
-            },
-            function(win) {
-
-                var Tabid = win.tabs[0].id;
-
-                seqWindow = Tabid;
-
-                var timeOutGlobalClose = 60000 * generalTimeout;
-
-                function functionToExecute(users, userName, timeOutGlobalClose) {
-                    setTimeout(startOpenTabs, 3000, users, userName);
-                    setTimeout(callClose, timeOutGlobalClose, userName);
-                };
-                chrome.scripting.executeScript({
-                    target: { tabId: Tabid },
-                    function: functionToExecute,
-                    args: [users, userName, timeOutGlobalClose],
-                });
-            }
-        );
 
     } else if ( tipoCargue == 3 ){
         traficoGhost = true;

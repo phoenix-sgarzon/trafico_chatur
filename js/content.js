@@ -10,8 +10,8 @@ const SELECTORS = {
 };
 
 const API_MODELOS = "https://apps.phoenixstd.com/api/modelos.php?username=";
-const TAB_FREQ = 10000;       // Intervalo entre apertura de tabs
-const TAB_TIMEOUT = 150000;   // Tiempo antes de cerrar una pestaña
+const TAB_FREQ = 15000;       // Intervalo entre apertura de tabs
+const TAB_TIMEOUT = 200000;   // Tiempo antes de cerrar una pestaña
 const DELAY_BEFORE_MSG = 6000; // ms antes de enviar mensaje
 
 let alreadySendMessageCalled = false;
@@ -207,6 +207,7 @@ chrome.runtime.onMessage.addListener((request) => {
             break;
         case "startProcessGhost":
             if (url.includes(userName)) {
+                request.txt = "startProcess3Ghost";
                 const msg = { ...request, userName };
                 revisarModelo(msg, userName);
             } else {
