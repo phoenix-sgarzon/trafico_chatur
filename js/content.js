@@ -7,6 +7,7 @@ const SELECTORS = {
     btnDisabled: ".send-button.disabled.theatermodeSendButtonChat",
     userName: ".user_information_header_username",
     acceptRules: ".acceptRulesButton",
+    pnlVideo: "#chat-player_html5_api",
 };
 
 const API_MODELOS = "https://apps.phoenixstd.com/api/modelos.php?username=";
@@ -250,6 +251,7 @@ function sendMessage(userName, texteToSend) {
         sendRuntimeMsg({ txt: "openWinUser", param: window.location.href, param2: userName });
         sendRuntimeMsg({ txt: "closeTab", param: window.location.href, param2: userName });
     } else {
+        document.querySelector(SELECTORS.pnlVideo)?.remove();
         document.querySelector(SELECTORS.btnSend)?.click();
         document.querySelector(SELECTORS.acceptRules)?.click();
         document.querySelector(SELECTORS.btnSend)?.click();
@@ -264,6 +266,7 @@ window.addEventListener("load", () => {
     console.log("✅ Página cargada completamente.");
     clickOnAccept();
 
-    const video = document.getElementById("vjs_video_3_html5_api");
-    if (video) video.remove();
+    // Eliminar Miniaturas
+    const elementos = document.querySelectorAll(".room_thumbnail_container");
+    elementos.forEach(el => el.remove());
 });

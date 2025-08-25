@@ -306,9 +306,9 @@ function StarProcess(tipoCargue, tabsToOpen, userName, selec_trafico) {
                 var jusers = json;
                 var users = GetUsersString(jusers["body"]);
     
-                sendStatCommand(userName, "START", 15, "Users-" + jusers.length);
+                sendStatCommand(userName, "START", generalTimeout, "Users-" + jusers.length);
     
-                /*var newPage = "https://es.chaturbate.com/followed-cams/online";
+                var newPage = "https://es.chaturbate.com/followed-cams/online";
     
                 console.log("Abriendo page " + newPage);
     
@@ -341,7 +341,7 @@ function StarProcess(tipoCargue, tabsToOpen, userName, selec_trafico) {
                             args: [users, userName, timeOutGlobalClose],
                         });
                     }
-                );*/
+                );
             }).catch(error => console.log(error));
 
     } else if ( tipoCargue == 3 ){
@@ -353,7 +353,7 @@ function StarProcess(tipoCargue, tabsToOpen, userName, selec_trafico) {
                 var jusers = json;
                 var users = GetUsersString(jusers["body"]);
     
-                sendStatCommand(userName, "START", 15, "Users-" + jusers.length);
+                sendStatCommand(userName, "START", generalTimeout, "Users-" + jusers.length);
     
                 var newPage = "https://es.chaturbate.com/followed-cams/online";
     
