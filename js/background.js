@@ -6,7 +6,6 @@ let perfilTra = "";
 let vpn = "";
 let categoriaMsg = "";
 let seleccionCat = 1;
-let nombreCategoria = "";
 
 var windowsCount = 3;
 var generalTimeout = 20; // in minutes
@@ -17,21 +16,15 @@ let url_usuarios_activos = 'https://' + dominio + '/api/usuarios-activos.php';
 let url_usuarios_activos_trans = 'https://' + dominio + '/api/usuarios-activos-trans.php';
 
 var windowList = [];
+
 var stopExec = false;
 var seqWindow = 0;
 let countMsg = 0;
 
 let usuariosaRevisar = [];
-let usuariosaRevisarNombres = [];
+let msgList = [];
 
-let windowIDPrin;
-
-let datosUsuariosActivos = [];
-let windowIdUsuariosActivos;
-let tabwindowIdUsuariosActivos;
 let traficoGhost = false;
-
-console.log('background corriendo');
 
 function getCurrentDateTimeString() {
     var today = new Date();
@@ -124,7 +117,6 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
                     }
                 );
             } else {
-
                 chrome.tabs.create({
                     "url": msg.param,
                     "windowId": windowList[winIndex],
@@ -177,7 +169,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             countMsg += 1;
             console.log("Cantidad de mensajes enviados a usuarios " + countMsg);
             console.log("Recibido de la pestaña:" + sender.tab.id + " for user " + userName + " request to get Message");
-            getMessageForUser(userName, sender.tab.id);
+            getMessageForUser(sender.tab.id);
         }
     } else if (msg.txt == "openWinUser") {
         if(stopExec == false){
@@ -210,63 +202,66 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     }
 });
 
-function getMessageForUser(userName, tabtonotify) {
-    var link = url_api_mensaje + seleccionCat + "&estudio=phoenix";
-    console.log(link);
-    fetch(link)
-        .then(response => response.json())
-        .then(function(json) {
-            console.log("JSON: " + JSON.stringify(json));
-            if( json["itemCount"] > 0 ){
-                var msg = json["body"];
-                if (msg.mensaje) {
-                    let smsg = {
-                        txt: "sendNowRandom",
-                        message: msg.mensaje,
-                        categoria: seleccionCat
-                    }
-                    
-                    chrome.tabs.sendMessage(tabtonotify, smsg);
-                    console.log("Mensaje '" + msg.mensaje + "' enviado!");
-                } else {
-                    console.log("Ningún mensaje recibido");
-                }
-            }else{
-                console.log("Ningún mensaje recibido");
+function getMessageForUser(tabtonotify) {
+    try {
+        const msgText = msgList[Math.floor(Math.random() * msgList.length)];
+        if ( msgText ) {
+            let smsg = {
+                txt: "sendNowRandom",
+                message: msgText,
+                categoria: seleccionCat
             }
-        }).catch(error => console.log(error));
+            
+            chrome.tabs.sendMessage(tabtonotify, smsg);
+            console.log("Mensaje '" + msgText + "' enviado!");
+        } else {
+            console.log("Ningún mensaje recibido");
+        }
+    } catch (error) {
+        console.log("Error al traer el mensaje: ", error);
+    }
 }
 
-function sendStatCommand(userName, command, dur, tabstoopen) {
-    console.log("duracion" + dur);
-    console.log("userName" + userName);
-    console.log("perfil Trafico" + dominio);
-    var link = url_api_stats;
-    console.log(link);
+async function getMessageList() {
+    const url = `https://apps.phoenixstd.com/api/mensajes.php?id_categoria=${seleccionCat}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Error en la petición: " + response.status);
 
-    const data = new FormData();
-    data.append('modelo', userName);
-    data.append('duracion', dur);
-    data.append('perfil_trafico', perfilTra);
-    data.append('sede', sede);
-    data.append('maquina', maquina);
-    data.append('vpn', vpn);
-    
-    if( categoriaMsg != 0 ) {
-        data.append('categoriaMen', categoriaMsg);    
-    } else {
-        data.append('categoriaMen', "Sabana");
+    const data = await response.json();
+
+    msgList = data.body.map(item => item.mensaje);
+}
+
+async function sendStatCommand(userName, command, dur, tabstoopen) {
+    try {
+        // 🔹 Luego enviamos stats
+        const data = new FormData();
+        data.append("modelo", userName);
+        data.append("duracion", dur);
+        data.append("perfil_trafico", perfilTra);
+        data.append("sede", sede);
+        data.append("maquina", maquina);
+        data.append("vpn", vpn);
+
+        if( categoriaMsg != 0 ) {
+            data.append('categoriaMen', categoriaMsg); 
+            await getMessageList();
+            console.log("✅ Mensajes recibidos:", msgList);
+        } else{
+            data.append('categoriaMen', "Sabana");
+        }
+
+        const response = await fetch(url_api_stats, {
+            method: "POST",
+            body: data
+        });
+
+        const result = await response.text();
+        console.log(`📡 Comando Stats '${command}' para ${userName} enviado:`, result);
+
+    } catch (error) {
+        console.error("❌ Error en sendStatCommand: ", error);
     }
-    
-    console.log(JSON.stringify(data));
-    fetch(url_api_stats, {
-        method:'POST',
-        body: data
-    })
-        .then(response => response.text())
-        .then(function(json) {
-            console.log("Comando Stats " + command + " Para " + userName + " Enviado.");
-        }).catch(error => console.log(error));
 }
 
 function funcShuffle(a, b) {
@@ -313,7 +308,7 @@ function StarProcess(tipoCargue, tabsToOpen, userName, selec_trafico) {
     
                 sendStatCommand(userName, "START", 15, "Users-" + jusers.length);
     
-                var newPage = "https://es.chaturbate.com/followed-cams/online";
+                /*var newPage = "https://es.chaturbate.com/followed-cams/online";
     
                 console.log("Abriendo page " + newPage);
     
@@ -346,7 +341,7 @@ function StarProcess(tipoCargue, tabsToOpen, userName, selec_trafico) {
                             args: [users, userName, timeOutGlobalClose],
                         });
                     }
-                );
+                );*/
             }).catch(error => console.log(error));
 
     } else if ( tipoCargue == 3 ){
